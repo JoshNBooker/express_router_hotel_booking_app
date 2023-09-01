@@ -1,33 +1,69 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './App.css';
-import { postBooking } from './BookingService';
+import { postBooking, getBookings } from './BookingService';
 import BookingForm from './BookingForm';
 
 function App() {
-	const handleAddBooking = (e) => {
-		console.log(e);
+	const [bookings, setBookings] = useState([]);
+
+	useEffect(() => {
+		getBookings().then((data) => {
+			setBookings(data);
+		});
+	}, []);
+
+	const handleAddBooking = (newBooking) => {
+		setBookings((prevBookings) => [...prevBookings, newBooking]);
 	};
 
 	return (
 		<>
-			<BookingForm handleAddBooking={handleAddBooking} />
-			<BookingList />
+			<h1>Add a Booking</h1>
+			<BookingForm
+				handleAddBooking={handleAddBooking}
+				postBooking={postBooking}
+			/>
+			<h2>Booking List</h2>
+			{bookings.map((booking) => (
+				<ul key={booking._id}>
+					<BookingList booking={booking} />
+				</ul>
+			))}
 		</>
 	);
 }
 
-const BookingList = () => {
+const BookingList = ({ booking }) => {
 	return (
-		<>
-			<p>Booking List</p>
-			<BookingCard />
-		</>
+		<li>
+			<p>
+				<b>Booking for: </b>
+				{`${booking.name.first} ` + `${booking.name.last}`}
+			</p>
+			<p>
+				<b>Email: </b>
+				{booking.email}
+			</p>
+			<p>
+				<b>Checked in? </b>
+				{booking.checkedIn ? 'Yes' : 'No'}
+			</p>
+			<p>
+				<CheckedInToggle booking={booking} />
+			</p>
+		</li>
 	);
 };
-const BookingCard = () => {
+const CheckedInToggle = ({ booking }) => {
+	const updateCheckedIn = () => {
+		console.log('i');
+	};
+
 	return (
 		<>
-			<p>Booking Card</p>
+			<button onClick={updateCheckedIn}>
+				{booking.checkedIn ? 'Check Out' : 'Check In'}
+			</button>
 		</>
 	);
 };

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-const BookingForm = ({ handleAddBooking }) => {
+const BookingForm = ({ handleAddBooking, postBooking }) => {
 	const [formData, setFormData] = useState({
 		name: {
 			first: '',
@@ -40,7 +40,6 @@ const BookingForm = ({ handleAddBooking }) => {
 
 	return (
 		<>
-			<h1>Add a Booking</h1>
 			<form onSubmit={onSubmit}>
 				<label htmlFor="firstName">Customer First Name: </label>
 				<input
