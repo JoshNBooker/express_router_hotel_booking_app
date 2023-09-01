@@ -11,3 +11,11 @@ export const postBooking = (payload) => {
 		headers: { 'Content-Type': 'application/json' },
 	}).then((res) => res.json());
 };
+
+export const updateBooking = (id, updatedData) => {
+	return fetch(`${baseURL}/${id}`, {
+		method: 'PUT',
+		body: JSON.stringify(updatedData),
+		headers: { 'Content-Type': 'application/json' },
+	}).then((res) => res.json());
+};
